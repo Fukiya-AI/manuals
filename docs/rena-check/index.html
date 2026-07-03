@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>献立表×栄養出納帳 突合チェック 使い方マニュアル</title>
+<style>
+  :root {
+    --brand-orange: #EA570F;
+    --brand-orange-soft: #FBDCC5;
+    --brand-green: #7CAA1F;
+    --brand-green-soft: #DCEBC0;
+    --ink: #2B2016;
+    --ink-soft: #6B5C4C;
+    --paper: #FFFBF6;
+    --paper-raised: #FFF4EA;
+    --paper-card: #FFFFFF;
+    --line: #E9DCC9;
+    --danger: #C4491D;
+    --danger-soft: #FCE3D6;
+    --focus: #1D6FB8;
+    --shadow: 0 1px 2px rgba(43, 32, 22, 0.04), 0 8px 24px -12px rgba(43, 32, 22, 0.18);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --brand-orange: #FF8A4C;
+      --brand-orange-soft: #4A2A16;
+      --brand-green: #A8D94A;
+      --brand-green-soft: #33421A;
+      --ink: #F3E9DC;
+      --ink-soft: #C7B7A3;
+      --paper: #1B140E;
+      --paper-raised: #241B13;
+      --paper-card: #241B13;
+      --line: #40331F;
+      --danger: #FF9466;
+      --danger-soft: #4A2416;
+      --focus: #7FC1FF;
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px -12px rgba(0, 0, 0, 0.5);
+    }
+  }
+  :root[data-theme="dark"] {
+    --brand-orange: #FF8A4C;
+    --brand-orange-soft: #4A2A16;
+    --brand-green: #A8D94A;
+    --brand-green-soft: #33421A;
+    --ink: #F3E9DC;
+    --ink-soft: #C7B7A3;
+    --paper: #1B140E;
+    --paper-raised: #241B13;
+    --paper-card: #241B13;
+    --line: #40331F;
+    --danger: #FF9466;
+    --danger-soft: #4A2416;
+    --focus: #7FC1FF;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px -12px rgba(0, 0, 0, 0.5);
+  }
+  :root[data-theme="light"] {
+    --brand-orange: #EA570F;
+    --brand-orange-soft: #FBDCC5;
+    --brand-green: #7CAA1F;
+    --brand-green-soft: #DCEBC0;
+    --ink: #2B2016;
+    --ink-soft: #6B5C4C;
+    --paper: #FFFBF6;
+    --paper-raised: #FFF4EA;
+    --paper-card: #FFFFFF;
+    --line: #E9DCC9;
+    --danger: #C4491D;
+    --danger-soft: #FCE3D6;
+    --focus: #1D6FB8;
+    --shadow: 0 1px 2px rgba(43, 32, 22, 0.04), 0 8px 24px -12px rgba(43, 32, 22, 0.18);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Hiragino Sans", "Yu Gothic UI", "Meiryo", "Segoe UI", sans-serif;
+    line-height: 1.9;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .sheet {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 24px 96px;
+  }
+
+  .topbar {
+    height: 6px;
+    background: linear-gradient(90deg, var(--brand-orange), var(--brand-green));
+  }
+
+  header.hero {
+    padding: 48px 0 32px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 40px;
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    color: var(--brand-orange);
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    font-size: clamp(1.6rem, 1.2rem + 1.6vw, 2.15rem);
+    line-height: 1.35;
+    margin: 10px 0 12px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+
+  .lede {
+    font-size: 1.02rem;
+    color: var(--ink-soft);
+    max-width: 60ch;
+    margin: 0 0 24px;
+  }
+
+  .app-link-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 16px 20px;
+  }
+
+  .app-link-card .label {
+    font-size: 0.75rem;
+    color: var(--ink-soft);
+    letter-spacing: 0.04em;
+    margin-bottom: 4px;
+  }
+
+  .app-link-card .url {
+    font-family: "SFMono-Regular", Consolas, "Courier New", monospace;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--ink);
+    word-break: break-all;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--brand-orange);
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.92rem;
+    padding: 10px 20px;
+    border-radius: 999px;
+    text-decoration: none;
+    white-space: nowrap;
+    box-shadow: var(--shadow);
+  }
+  .btn:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+
+  section { margin-bottom: 48px; }
+
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+
+  h2 {
+    font-size: 1.25rem;
+    font-weight: 800;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+
+  .section-note {
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+  }
+
+  .steps {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .step {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    gap: 16px;
+    background: var(--paper-card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 18px 20px;
+    box-shadow: var(--shadow);
+  }
+
+  .step-num {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--brand-orange-soft);
+    color: var(--brand-orange);
+    font-weight: 800;
+    font-family: "SFMono-Regular", Consolas, monospace;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.95rem;
+  }
+
+  .step h3 {
+    margin: 2px 0 6px;
+    font-size: 1.02rem;
+    font-weight: 700;
+  }
+
+  .step p {
+    margin: 0;
+    color: var(--ink-soft);
+    font-size: 0.94rem;
+  }
+
+  .step .fine {
+    margin-top: 8px;
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+    background: var(--paper-raised);
+    border-radius: 8px;
+    padding: 8px 12px;
+  }
+
+  .file-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 10px;
+  }
+
+  .file-card {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 14px 16px;
+    background: var(--paper-card);
+  }
+
+  .file-card .tag {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    color: var(--brand-orange);
+    background: var(--brand-orange-soft);
+    border-radius: 6px;
+    padding: 2px 8px;
+    margin-bottom: 8px;
+  }
+
+  .file-card .tag.optional {
+    color: var(--ink-soft);
+    background: var(--paper-raised);
+  }
+
+  .file-card .name {
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-bottom: 2px;
+  }
+
+  .file-card .ext {
+    font-family: "SFMono-Regular", Consolas, monospace;
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+  }
+
+  .glossary {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .glossary-row {
+    display: grid;
+    grid-template-columns: 96px 1fr;
+    gap: 16px;
+    align-items: start;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 14px 16px;
+    background: var(--paper-card);
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 0.82rem;
+    border-radius: 999px;
+    padding: 5px 0;
+    width: 100%;
+  }
+  .chip.ok { background: var(--brand-green-soft); color: var(--brand-green); }
+  .chip.ng { background: var(--danger-soft); color: var(--danger); }
+  .chip.hl {
+    background: linear-gradient(180deg, #FFF3B0, #FFE066);
+    color: #6B5300;
+  }
+
+  .glossary-row p { margin: 0; font-size: 0.92rem; color: var(--ink-soft); }
+  .glossary-row strong { color: var(--ink); }
+
+  details {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 4px 18px;
+    background: var(--paper-card);
+    margin-bottom: 10px;
+  }
+  details + details { margin-top: 10px; }
+  summary {
+    cursor: pointer;
+    padding: 14px 0;
+    font-weight: 700;
+    font-size: 0.96rem;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::after {
+    content: "+";
+    font-weight: 400;
+    font-size: 1.3rem;
+    color: var(--brand-orange);
+    flex-shrink: 0;
+  }
+  details[open] summary::after { content: "−"; }
+  details p {
+    margin: 0 0 16px;
+    color: var(--ink-soft);
+    font-size: 0.92rem;
+  }
+  summary:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; border-radius: 6px; }
+
+  footer {
+    border-top: 1px solid var(--line);
+    padding-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+  }
+
+  footer a { color: var(--ink-soft); }
+
+  @media (max-width: 480px) {
+    .step { grid-template-columns: 32px 1fr; padding: 16px; }
+    .step-num { width: 30px; height: 30px; font-size: 0.85rem; }
+    .glossary-row { grid-template-columns: 72px 1fr; }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .step, .file-card, .glossary-row, details { transition: border-color 0.15s ease; }
+  }
+</style>
+</head>
+<body>
+<div class="topbar"></div>
+<div class="sheet">
+
+  <header class="hero">
+    <span class="eyebrow">株式会社富喜屋 ・ 社内ツール</span>
+    <h1>献立表×栄養出納帳<br>突合チェックの使い方</h1>
+    <p class="lede">
+      献立表の材料を食品群ごとに自動集計し、栄養出納帳の値と一致しているかをチェックするツールです。
+      このページでは、実際にファイルをアップロードして結果を確認するまでの手順を説明します。
+    </p>
+    <div class="app-link-card">
+      <div>
+        <div class="label">アプリを開く</div>
+        <div class="url">rena-check-v6.streamlit.app</div>
+      </div>
+      <a class="btn" href="https://rena-check-v6.streamlit.app">アプリを開く →</a>
+    </div>
+  </header>
+
+  <section>
+    <div class="section-head">
+      <h2>準備するファイル</h2>
+      <span class="section-note">③④はどちらか一方でも可</span>
+    </div>
+    <div class="file-grid">
+      <div class="file-card">
+        <span class="tag">必須</span>
+        <div class="name">① 献立表</div>
+        <div class="ext">.xls / .xlsx</div>
+      </div>
+      <div class="file-card">
+        <span class="tag">必須</span>
+        <div class="name">② 食品群リスト</div>
+        <div class="ext">.xlsx</div>
+      </div>
+      <div class="file-card">
+        <span class="tag optional">どちらか一方</span>
+        <div class="name">③ 栄養価（おやつ有り）</div>
+        <div class="ext">.xls / .xlsx</div>
+      </div>
+      <div class="file-card">
+        <span class="tag optional">どちらか一方</span>
+        <div class="name">④ 栄養価（おやつ無し）</div>
+        <div class="ext">.xls / .xlsx</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <h2>操作手順</h2>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div>
+          <h3>アプリを開いてログインする</h3>
+          <p>上のリンクからアプリを開きます。初回はメールアドレスに届く認証コードの入力が必要です。</p>
+          <div class="fine">画面が開けない場合は、閲覧権限の招待がまだの可能性があります。担当者に連絡してください。</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div>
+          <h3>4つのファイルをアップロードする</h3>
+          <p>①〜④の枠にそれぞれのファイルをドラッグ＆ドロップ、または「Upload」から選択します。</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div>
+          <h3>「チェック実行」を押す</h3>
+          <p>必要なファイルが揃うとボタンが押せるようになります。数秒〜数十秒で結果が表示されます。</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div>
+          <h3>結果を確認する</h3>
+          <p>日付・食品群ごとにOK / NGの一覧表と、原因となった材料の一覧が表示されます。下の「結果の見方」を参照してください。</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div>
+          <h3>必要であればファイルをダウンロードする</h3>
+          <p>不一致があった場合、該当箇所を黄色くハイライトした献立表・栄養出納帳をダウンロードできます。確認作業や共有にご利用ください。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <h2>結果の見方</h2>
+    </div>
+    <div class="glossary">
+      <div class="glossary-row">
+        <span class="chip ok">OK</span>
+        <p><strong>献立表からの計算値と栄養出納帳の値が一致</strong>しています。対応不要です。</p>
+      </div>
+      <div class="glossary-row">
+        <span class="chip ng">NG</span>
+        <p><strong>値が一致していません。</strong>下の「食品群リストに未掲載の材料」欄に、原因となった材料が表示されていないか確認してください。</p>
+      </div>
+      <div class="glossary-row">
+        <span class="chip hl">黄色</span>
+        <p>ダウンロードした献立表・栄養出納帳の中で、<strong>食品群リストにまだ載っていない材料</strong>のセルが黄色く塗られています。NGの主な原因です。</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <h2>よくある質問</h2>
+    </div>
+
+    <details open>
+      <summary>NGがたくさん出ます。どうすればいいですか？</summary>
+      <p>
+        多くの場合、食品群リストに載っていない材料名（表記ゆれを含む）が原因です。
+        黄色くハイライトされた材料を確認し、食品群リストへの追加が必要か担当者に相談してください。
+        食品群リストは現在も整備中のため、しばらくはNGが多く出ることがあります。
+      </p>
+    </details>
+
+    <details>
+      <summary>アップロードしたファイルは保存されますか？</summary>
+      <p>
+        いいえ。アップロードしたファイルはその場でチェックのために処理されるだけで、サーバーに保存され続けることはありません。
+      </p>
+    </details>
+
+    <details>
+      <summary>数値の端数（小数点）はどう扱われていますか？</summary>
+      <p>
+        g数は日付・食品群ごとに合計したうえで、四捨五入した整数で比較しています。
+      </p>
+    </details>
+
+    <details>
+      <summary>「おやつ有り」「おやつ無し」の違いは何ですか？</summary>
+      <p>
+        「おやつ有り」は昼食とおやつ（献立名に[午後]と付くもの）の両方を対象に集計します。
+        「おやつ無し」は昼食のみを対象に集計します。
+      </p>
+    </details>
+
+    <details>
+      <summary>アプリが開けない・エラーが出ます</summary>
+      <p>
+        しばらく使われていないとアプリが休止状態になり、再度開く際に数十秒かかることがあります。
+        それでも改善しない場合は担当者（宮崎）まで連絡してください。
+      </p>
+    </details>
+  </section>
+
+  <footer>
+    <span>作成：株式会社富喜屋</span>
+    <span><a href="../">← マニュアル一覧に戻る</a> ・ お問い合わせ：宮崎</span>
+  </footer>
+
+</div>
+</body>
+</html>
